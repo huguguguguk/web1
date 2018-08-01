@@ -1,38 +1,56 @@
 <!DOCTYPE html>
-
+<html>
 <head>
-        <title>WEB1 - html</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <script src="colors.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-        </script>
+	<title>WEB1 - Welcome</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+	<script src="colors.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+	</script>
 </head>
 
 <body>
-        <h1><a href="index.html">WEB</h1></a>
-        <input id="night_day" type="button" value="night" onclick="
-        nightDayHandler(this);
-        ">
-        <div id="grid">
-                <ol>
-                        <li><a onclick="fetchPage('html')">HTML</a></li>
-                        <li><a onclick="fetchPage('css')">CSS</a></li>
-                        <li><a onclick="fetchPage('javascript')">JavaScript</a></li>
-                </ol>
-                <div id="article">
-                <article></article>
-                <script>
-                        function fetchPage(name){
-                        fetch(name).then(function(response){
-                        response.text().then(function(text){      
-                          document.querySelector('article').innerHTML =text;
-                          })
-                          });
-                        }
-                </script>       
-                </div>
-        </div>
+	<h1><a href="#!welcome">WEB</a></h1>
+	<input id="night_day" type="button" value="night" onclick="
+	nightDayHandler(this);
+	">
+	<div id="grid">
+		<ol id="nav"></ol>
+		<div id="article">
+		<article></article>
+		<script>
+			function fetchPage(name){
+			fetch(name).then(function(response){
+	  		response.text().then(function(text){	  
+			  document.querySelector('article').innerHTML =text;
+			  })
+			  });
+			}
+		if(location.hash){
+			fetchPage(location.hash.substr(2));
+		}else{
+			fetchPage('welcome');
+		}
+
+		fetch('list').then(function(response){
+			response.text().then(function(text){
+				
+                var items = text.split(',');
+		var i =0;
+                var tags = '';
+                while(i < items.length){
+                        var item = items[i];
+			item = item.trim();
+			var tag = '<li><a href="#!'+item+'" onclick="fetchPage(\''+item+'\')">'+item+'</li>';
+                        tags =tags+tag;
+                        i =i+ 1;
+                }
+			document.querySelector('#nav').innerHTML=tags;
+			})
+		});
+	
+		</script>	
+		</div>
+	</div>
 </body>
 </html>
-                           
